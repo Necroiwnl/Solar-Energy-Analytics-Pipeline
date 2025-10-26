@@ -32,10 +32,10 @@ What once took hours of manual work now happens automatically, providing reliabl
 The heart of this automation is the following SQL query I wrote for BigQuery. It efficiently processes thousands of raw hourly records into the clean, daily summary table that feeds the final dashboard.
 
 ```sql
--- This query creates a new table with daily aggregated data
+-- Create a new table with daily aggregated data
 CREATE OR REPLACE TABLE solar_project.daily_generation AS
 SELECT
-    -- Extract just the date from the timestamp
+    -- Extract date from the timestamp
     DATE(Timestamp) AS generation_date,
     Plant_ID,
     -- Sum the energy and downtime for the entire day
@@ -46,13 +46,13 @@ SELECT
 FROM
     `solar-analytics-pipeline.solar_project.raw_solar_data`
 WHERE
-    -- Only include data where inverters were active
+    -- Including data where inverters were active
     Inverter_Efficiency_pct > 0
 GROUP BY
     -- Group the calculations for each day and each plant
     generation_date,
     Plant_ID
 ORDER BY
-    -- Sort the final table
+    -- Sorting the final table
     generation_date,
     Plant_ID;
